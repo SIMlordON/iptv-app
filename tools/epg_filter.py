@@ -9,6 +9,7 @@ under Settings > Program (EPG). Channels are matched like the app does: by tvg-i
 normalised channel name.
 """
 import gzip
+import os
 import re
 import sys
 import unicodedata
@@ -85,6 +86,7 @@ def main():
                     if start and stop and stop > lo and start < hi:
                         programmes.append(ET.tostring(el, encoding="unicode"))
                 el.clear()
+    os.makedirs(os.path.dirname(OUT) or ".", exist_ok=True)
     with gzip.open(OUT, "wt", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="utf-8"?>\n<tv generator-info-name="epg_filter">\n')
         f.write("\n".join(channels) + "\n" + "\n".join(programmes) + "\n</tv>\n")
